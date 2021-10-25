@@ -1017,15 +1017,14 @@ wolfsentry_errcode_t wolfsentry_config_json_feed(
     char *err_buf,
     size_t err_buf_size)
 {
-    JSON_INPUT_POS json_pos;
     int ret = json_feed(&jps->parser, json_in, json_in_len);
     if (ret != JSON_ERR_SUCCESS) {
-        ret = json_fini(&jps->parser, &json_pos);
+        ret = wolfsentry_config_json_fini(jps, NULL, 0);
         if (err_buf) {
             if (WOLFSENTRY_ERROR_DECODE_SOURCE_ID(ret) == WOLFSENTRY_SOURCE_ID_UNSET)
-                snprintf(err_buf, err_buf_size, "json_feed failed at offset %zu, L%u, col %u, with centijson code %d: %s", json_pos.offset,json_pos.line_number, json_pos.column_number, ret, json_error_str(ret));
+                snprintf(err_buf, err_buf_size, "json_feed failed at offset %zu, L%u, col %u, with centijson code %d: %s", jps->parser.pos.offset,jps->parser.pos.line_number, jps->parser.pos.column_number, ret, json_error_str(ret));
             else
-                snprintf(err_buf, err_buf_size, "json_feed failed at offset %zu, L%u, col %u, with " WOLFSENTRY_ERROR_FMT, json_pos.offset,json_pos.line_number, json_pos.column_number, WOLFSENTRY_ERROR_FMT_ARGS(ret));
+                snprintf(err_buf, err_buf_size, "json_feed failed at offset %zu, L%u, col %u, with " WOLFSENTRY_ERROR_FMT, jps->parser.pos.offset,jps->parser.pos.line_number, jps->parser.pos.column_number, WOLFSENTRY_ERROR_FMT_ARGS(ret));
         }
         if (WOLFSENTRY_ERROR_DECODE_SOURCE_ID(ret) == WOLFSENTRY_SOURCE_ID_UNSET)
             WOLFSENTRY_ERROR_RETURN(CONFIG_PARSER);
