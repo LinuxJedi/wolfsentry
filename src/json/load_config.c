@@ -943,6 +943,10 @@ wolfsentry_errcode_t wolfsentry_config_json_init(
 
     if (wolfsentry == NULL)
         WOLFSENTRY_ERROR_RETURN(INVALID_ARG);
+
+    if (WOLFSENTRY_MASKIN_BITS(load_flags, WOLFSENTRY_CONFIG_LOAD_FLAG_FINI))
+        WOLFSENTRY_ERROR_RETURN(INVALID_ARG);
+
     if ((*jps = (struct wolfsentry_json_process_state *)wolfsentry_malloc(wolfsentry, sizeof **jps)) == NULL)
         WOLFSENTRY_ERROR_RETURN(SYS_RESOURCE_FAILED);
     memset(*jps, 0, sizeof **jps);
@@ -1049,6 +1053,11 @@ wolfsentry_errcode_t wolfsentry_config_json_fini(
 {
     wolfsentry_errcode_t ret;
     JSON_INPUT_POS json_pos;
+
+    if (WOLFSENTRY_CHECK_BITS(jps->load_flags, WOLFSENTRY_CONFIG_LOAD_FLAG_FINI))
+        WOLFSENTRY_ERROR_RETURN(ALREADY);
+    WOLFSENTRY_SET_BITS(jps->load_flags, WOLFSENTRY_CONFIG_LOAD_FLAG_FINI);
+
     ret = json_fini(&jps->parser, &json_pos);
     if (ret != JSON_ERR_SUCCESS) {
         if (err_buf != NULL)
