@@ -39,29 +39,29 @@ sudo docker exec -it linux-lwip_tester2_1 /bin/sh
 
 #### Echoserver
 
-* IP address: 172.20.20.3 (node) 127.20.20.5 (echo process)
-* MAC address: de:c0:de:01:02:03
+* IP address: `172.20.20.3` (node) `127.20.20.5` (echo process)
+* MAC address: `de:c0:de:01:02:03`
 
 The echo test process runs from this node, it uses PCAP and lwIP to create a static IP of 127.20.20.5 for the actually test.
 
 #### Tester 1
 
-* IP address: 172.20.20.10
-* MAC address: de:c0:de:03:02:01
+* IP address: `172.20.20.10`
+* MAC address: `de:c0:de:03:02:01`
 
 The sentry test is configured to allow this node to ping the echoserver node, but the TCP connection is not accepted during handshake.
 
 #### Tester 2
 
-* IP address: 172.20.20.20
-* MAC address: de:c0:de:03:02:02
+* IP address: `172.20.20.20`
+* MAC address: `de:c0:de:03:02:02`
 
 The sentry test is configured to block this node pinging the echoserver node, but the TCP connection is accepted during handshake.
 
 #### Tester 3
 
-* IP address: 172.20.20.30
-* MAC address: de:c0:de:03:03:01
+* IP address: `172.20.20.30`
+* MAC address: `de:c0:de:03:03:01`
 
 The sentry test is configured to deny traffic from this MAC address.
 
